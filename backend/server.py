@@ -10,27 +10,27 @@ from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 
 
-# Load environment variables
+
 load_dotenv()
 groq_api_key = os.getenv('GROQ_API_KEY')
 
-# Initialize Flask app
+
 app = Flask(__name__)
-# , resources={r"/ask": {"origins": "http://localhost:3000"}}
+
 CORS(app)
-# Initialize embeddings
+
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
-# Load the pre-built FAISS vector database (both .faiss and .pkl)
-VECTORSTORE_PATH = "D:/Pranav/api_chatbot"  # Replace with the correct path
+
+VECTORSTORE_PATH = "../CrustData_API_ChatBot"  
 try:
-    # Load the FAISS vectorstore (both index.pkl and index.faiss) with embeddings
+    
     vectorstore = FAISS.load_local(VECTORSTORE_PATH, embeddings=embeddings, allow_dangerous_deserialization = True)
     retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
 except Exception as e:
     raise RuntimeError(f"Failed to load FAISS vectorstore: {str(e)}")
 
-# Initialize the LLM and prompt
+
 llm = ChatGroq(
     groq_api_key=groq_api_key,
     model_name="llama-3.1-8b-instant",
@@ -48,17 +48,17 @@ prompt = ChatPromptTemplate.from_template(
     """
 )
 
-# Create the retrieval chain
+
 document_chain = create_stuff_documents_chain(llm, prompt)
 retrieval_chain = create_retrieval_chain(retriever, document_chain)
 
-# Route for asking questions
+
 @app.route('/ask', methods=['POST'])
 
 def ask_question():
     try:
         
-        # Parse user input
+        
         user_input = request.json.get("question", "")
         
         chat_history = request.json.get("chat_history", [])
@@ -67,26 +67,26 @@ def ask_question():
         if not user_input:
             return jsonify({"error": "No question provided"}), 400
 
-        # Generate response
+        
         response = retrieval_chain.invoke({
             "input": user_input,
             "chat_history": chat_history
         })
         
 
-        # Append user input and AI response to chat history
+        
         chat_history.append({"role": "user", "content": user_input})
         chat_history.append({"role": "ai", "content": response['answer']})
 
         return jsonify({
             "question": user_input,
             "answer": response['answer'],
-            "chat_history": chat_history[-5:]  # Limit chat history to last 5 interactions
+            "chat_history": chat_history[-5:]  
         })
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Main entry point for the app
+
 if __name__ == '__main__':
     app.run()
