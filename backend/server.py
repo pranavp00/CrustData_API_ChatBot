@@ -22,7 +22,7 @@ CORS(app)
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 
-VECTORSTORE_PATH = "backend"  
+VECTORSTORE_PATH = "backend/vectors"  
 try:
     
     vectorstore = FAISS.load_local(VECTORSTORE_PATH, embeddings=embeddings, allow_dangerous_deserialization = True)
