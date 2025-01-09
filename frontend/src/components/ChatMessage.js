@@ -25,9 +25,22 @@ const ChatMessage = ({ message }) => {
       }
     
       // Add remaining text
-      if (lastIndex < message.length) {
+      // if (lastIndex < message.length) {
+      //   parts.push({ type: "text", content: message.slice(lastIndex).trim() });
+      // }
+      // Add remaining text
+      if (message && typeof message === 'string' && lastIndex < message.length) {
         parts.push({ type: "text", content: message.slice(lastIndex).trim() });
+      } else if (message && typeof message !== 'string'){
+        console.error("Message is not a string:", message);
+    // Handle the case where message is not a string appropriately
       }
+      else {
+        console.warn("Message is undefined or null, skipping text addition.");
+    // Handle the case where message is undefined or null appropriately (e.g., don't add anything, add a placeholder)
+      }
+
+return parts;
     
       return parts;
     };
