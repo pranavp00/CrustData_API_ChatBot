@@ -18,7 +18,7 @@ groq_api_key = os.getenv('GROQ_API_KEY')
 app = Flask(__name__)
 
 
-CORS(app, origins="https://crustdata-api-chatbot-1.onrender.com")
+CORS(app)
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 
@@ -89,4 +89,4 @@ def ask_question():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
