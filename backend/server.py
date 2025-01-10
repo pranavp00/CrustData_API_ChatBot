@@ -22,7 +22,7 @@ CORS(app,  resources={r"/ask": {"origins": "https://crustdata-api-chatbot-1.onre
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 
-VECTORSTORE_PATH = "backend/vectors"  
+VECTORSTORE_PATH = "vectors"  
 try:
     
     vectorstore = FAISS.load_local(VECTORSTORE_PATH, embeddings=embeddings, allow_dangerous_deserialization = True)
