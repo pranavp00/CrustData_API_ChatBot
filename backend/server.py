@@ -65,6 +65,10 @@ retrieval_chain = create_retrieval_chain(retriever, document_chain)
 #     response.headers["Access-Control-Allow-Credentials"] = "true"
 #     return response
 
+@app.route('/', methods=['GET', 'HEAD'])
+def home():
+    return jsonify({"message": "Server is running"}), 200
+
 @app.route('/ask', methods=['POST'])
 
 def ask_question():
