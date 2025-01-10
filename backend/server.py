@@ -19,7 +19,11 @@ groq_api_key = os.getenv('GROQ_API_KEY')
 app = Flask(__name__)
 
 
-CORS(app, resources={r'/*': {'origins': '*'}})
+CORS(
+    app,
+    resources={r"/ask": {"origins": "http://localhost:3000"}},
+    supports_credentials=True
+)
 
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
@@ -58,9 +62,8 @@ retrieval_chain = create_retrieval_chain(retriever, document_chain)
 @app.route('/ask', methods=['POST', 'OPTIONS'])
 
 def ask_question():
-    
-    try:
-        if request.method == 'OPTIONS':
+
+     if request.method == 'OPTIONS':
         
             response = app.response_class()
             response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
@@ -68,6 +71,9 @@ def ask_question():
             response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
             response.headers["Access-Control-Allow-Credentials"] = "true"
             return response
+    
+    try:
+       
         
         
         user_input = request.json.get("question", "")
