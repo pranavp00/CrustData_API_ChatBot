@@ -17,8 +17,8 @@ groq_api_key = os.getenv('GROQ_API_KEY')
 
 app = Flask(__name__)
 
-CORS(app,  resources={r"/ask": {"origins": "https://crustdata-api-chatbot-1.onrender.com"}})
 
+CORS(app, origins="https://crustdata-api-chatbot-1.onrender.com")
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 
