@@ -62,28 +62,20 @@ retrieval_chain = create_retrieval_chain(retriever, document_chain)
 @app.route('/ask', methods=['POST', 'OPTIONS'])
 
 def ask_question():
-
-     if request.method == 'OPTIONS':
-        
-            response = app.response_class()
-            response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
-            response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
-            response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-            response.headers["Access-Control-Allow-Credentials"] = "true"
-            return response
+    if request.method == 'OPTIONS':
+        response = app.response_class()
+        response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+        response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        return response
     
     try:
-       
-        
-        
         user_input = request.json.get("question", "")
-        
         chat_history = request.json.get("chat_history", [])
         
-
         if not user_input:
             return jsonify({"error": "No question provided"}), 400
-
         
         response = retrieval_chain.invoke({
             "input": user_input,
