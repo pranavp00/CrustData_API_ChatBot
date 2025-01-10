@@ -21,8 +21,10 @@ app = Flask(__name__)
 
 CORS(
     app,
-    resources={r"/ask": {"origins": "http://localhost:3000"}},
-    supports_credentials=True
+    resources={r"/*": {"origins": "http://localhost:3000"}},
+    supports_credentials=True,
+    methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
@@ -57,7 +59,13 @@ prompt = ChatPromptTemplate.from_template(
 
 document_chain = create_stuff_documents_chain(llm, prompt)
 retrieval_chain = create_retrieval_chain(retriever, document_chain)
-
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
 
 @app.route('/ask', methods=['POST', 'OPTIONS'])
 
