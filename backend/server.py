@@ -61,13 +61,13 @@ def ask_question():
     
     try:
         if request.method == 'OPTIONS':
-        # Handle preflight request
-        response = app.response_class()
-        response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
-        response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
-        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-        response.headers["Access-Control-Allow-Credentials"] = "true"
-        return response
+        
+            response = app.response_class()
+            response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+            response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+            response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+            response.headers["Access-Control-Allow-Credentials"] = "true"
+            return response
         
         
         user_input = request.json.get("question", "")
