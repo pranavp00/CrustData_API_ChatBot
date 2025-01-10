@@ -19,9 +19,8 @@ groq_api_key = os.getenv('GROQ_API_KEY')
 app = Flask(__name__)
 
 
-CORS(app, supports_credentials=True, CORS_SUPPORTS_CREDENTIALS = True)
-
-
+CORS(app, resources={r'/*': {'origins': '*'}},CORS_SUPPORTS_CREDENTIALS = True)
+app.config['CORS_HEADERS'] = 'Content-Type'
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 
@@ -90,13 +89,6 @@ def ask_question():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.after_request
-def after_request(response):
-  response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
-  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-  response.headers.add('Access-Control-Allow-Credentials', 'true')
-  return response
 
 
 if __name__ == '__main__':
