@@ -17,12 +17,12 @@ groq_api_key = os.getenv('GROQ_API_KEY')
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(app,  resources={r"/ask": {"origins": "https://crustdata-api-chatbot-1.onrender.com"}})
 
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 
-VECTORSTORE_PATH = "vectors"  
+VECTORSTORE_PATH = "backend/vectors"  
 try:
     
     vectorstore = FAISS.load_local(VECTORSTORE_PATH, embeddings=embeddings, allow_dangerous_deserialization = True)

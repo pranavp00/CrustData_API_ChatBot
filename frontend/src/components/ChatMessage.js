@@ -42,7 +42,7 @@ const ChatMessage = ({ message }) => {
 
 return parts;
     
-      return parts;
+      
     };
   const parts = parseMessage(message);
 
