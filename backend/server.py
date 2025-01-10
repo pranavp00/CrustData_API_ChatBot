@@ -19,7 +19,7 @@ groq_api_key = os.getenv('GROQ_API_KEY')
 app = Flask(__name__)
 
 
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/*": {"origins": "https://crustdata-api-chatbot-1.onrender.com/ask"}})
 # resources={r"/*": {"origins": "http://localhost:3000"}},
 # supports_credentials=True,
 # methods=["GET", "POST", "OPTIONS"],
