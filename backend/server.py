@@ -20,6 +20,7 @@ app = Flask(__name__)
 
 
 CORS(app, supports_credentials=True)
+app.config["CORS_SUPPORTS_CREDENTIALS"] = True
 
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
