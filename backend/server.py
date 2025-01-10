@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
-# from flask_cors import CORS
-from flask_cors import cross_origin
+from flask_cors import CORS
+
 import os
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
@@ -19,7 +19,7 @@ groq_api_key = os.getenv('GROQ_API_KEY')
 app = Flask(__name__)
 
 
-# CORS(app, origins="*")
+CORS(app, supports_credentials=True)
 
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
@@ -56,7 +56,7 @@ retrieval_chain = create_retrieval_chain(retriever, document_chain)
 
 
 @app.route('/ask', methods=['POST'])
-@cross_origin
+
 def ask_question():
     try:
         
