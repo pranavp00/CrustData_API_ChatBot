@@ -20,7 +20,7 @@ app = Flask(__name__)
 
 CORS(app)
 app.use(cors({
-  origin: '*' // Allow requests from this origin
+  origin: '*' 
 }));
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
