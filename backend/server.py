@@ -18,10 +18,8 @@ groq_api_key = os.getenv('GROQ_API_KEY')
 app = Flask(__name__)
 
 
-CORS(app)
-app.use(cors({
-  origin: '*' 
-}));
+CORS(app, origins="*")
+
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 
