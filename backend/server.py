@@ -19,13 +19,11 @@ groq_api_key = os.getenv('GROQ_API_KEY')
 app = Flask(__name__)
 
 
-CORS(
-    app,
-    resources={r"/*": {"origins": "http://localhost:3000"}},
-    supports_credentials=True,
-    methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization"],
-)
+CORS(app)
+# resources={r"/*": {"origins": "http://localhost:3000"}},
+# supports_credentials=True,
+# methods=["GET", "POST", "OPTIONS"],
+# allow_headers=["Content-Type", "Authorization"],
 
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
@@ -59,24 +57,18 @@ prompt = ChatPromptTemplate.from_template(
 
 document_chain = create_stuff_documents_chain(llm, prompt)
 retrieval_chain = create_retrieval_chain(retriever, document_chain)
-@app.after_request
-def add_cors_headers(response):
-    response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    return response
+# @app.after_request
+# def add_cors_headers(response):
+#     response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+#     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+#     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+#     response.headers["Access-Control-Allow-Credentials"] = "true"
+#     return response
 
-@app.route('/ask', methods=['POST', 'OPTIONS'])
+@app.route('/ask', methods=['POST'])
 
 def ask_question():
-    if request.method == 'OPTIONS':
-        response = app.response_class()
-        response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
-        response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
-        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-        response.headers["Access-Control-Allow-Credentials"] = "true"
-        return response
+    
     
     try:
         user_input = request.json.get("question", "")
