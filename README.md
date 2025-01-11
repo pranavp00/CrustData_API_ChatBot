@@ -1,6 +1,3 @@
-Here's the final version of your **Crust API ChatBot** README, with a section for adding output images. I'll mention where to place them, and you can replace the placeholders with actual images if needed.
-
----
 
 # Crust API ChatBot  
 
